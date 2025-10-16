@@ -13,9 +13,7 @@ public class Shooter_Subsystem extends SubsystemBase {
     public static int TOP_FX_CANID = 15;
   }
 
-  {
-
-  }
+ 
   private static TalonFX topFx = new TalonFX(Constants.TOP_FX_CANID);
 
   /** Creates a new Shooter_Subsystem. */
@@ -28,10 +26,7 @@ public class Shooter_Subsystem extends SubsystemBase {
     
   }
 
-  private void setMotorPower (double power)
-  {
-    topFX 
-  }
+
 
   @Override
   public void periodic() {
