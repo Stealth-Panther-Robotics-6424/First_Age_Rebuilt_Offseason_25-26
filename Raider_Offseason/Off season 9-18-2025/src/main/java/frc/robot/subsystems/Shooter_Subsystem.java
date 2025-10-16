@@ -28,6 +28,11 @@ public class Shooter_Subsystem extends SubsystemBase {
     
   }
 
+  private void setMotorPower (double power)
+  {
+    topFX 
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
