@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
+import frc.robot.subsystems.Shooter_Subsystem;
 
 //johnathan's comment
 //Levi's Comment
@@ -39,8 +40,10 @@ public class RobotContainer {
     private final Telemetry logger = new Telemetry(MaxSpeed);
 
     private final CommandJoystick joystick = new CommandJoystick(0);
+    private final CommandJoystick buttonboard = new CommandJoystick(1);
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
+    public final Shooter_Subsystem shooter = new Shooter_Subsystem();
 
     public RobotContainer() {
         configureBindings();
@@ -74,6 +77,7 @@ public class RobotContainer {
 
         // reset the field-centric heading on left bumper press
         joystick.button(8).onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
+        joystick.button(1).whileTrue(shooter.runMotorCommand(() -> joystick.getRawAxis(2)));
 
         drivetrain.registerTelemetry(logger::telemeterize);
     }
