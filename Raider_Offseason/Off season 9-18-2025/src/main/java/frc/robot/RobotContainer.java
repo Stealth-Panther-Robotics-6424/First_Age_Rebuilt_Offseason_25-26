@@ -34,6 +34,10 @@ public class RobotContainer {
     private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
             .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
             .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
+
+    private final SwerveRequest.RobotCentric robotCentricDrive = new SwerveRequest.RobotCentric()
+            .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
+            .withDriveRequestType(DriveRequestType.OpenLoopVoltage);
     private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
     private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
 
@@ -54,14 +58,28 @@ public class RobotContainer {
         // and Y is defined as to the left according to WPILib convention.
         drivetrain.setDefaultCommand(
                 // Drivetrain will execute this command periodically
-                drivetrain.applyRequest(() -> drive.withVelocityX(-joystick.getRawAxis(1) * MaxSpeed) // Drive forward
-                                                                                                      // with negative Y
-                                                                                                      // (forward)
-                        .withVelocityY(-joystick.getRawAxis(0) * MaxSpeed) // Drive left with negative X (left)
-                        .withRotationalRate(-joystick.getRawAxis(4) * MaxAngularRate) // Drive counterclockwise with
-                                                                                      // negative X (left)
+                drivetrain.applyRequest(() -> drive.withVelocityX(joystick.getRawAxis(1) * MaxSpeed * throttle(3)) // Drive
+                                                                                                                   // forward
+                        // with negative Y
+                        // (forward)
+                        .withVelocityY(joystick.getRawAxis(0) * MaxSpeed * throttle(3)) // Drive left with negative X
+                                                                                        // (left)
+                        .withRotationalRate(joystick.getRawAxis(4) * MaxAngularRate * throttle(3)) // Drive
+                                                                                                   // counterclockwise
+                                                                                                   // with
+                // negative X (left)
                 ));
-
+        joystick.button(8).toggleOnTrue(drivetrain.applyRequest(() -> robotCentricDrive
+                .withVelocityX(joystick.getRawAxis(1) * MaxSpeed * throttle(3)) // Drive forward with
+                // negative Y (forward)
+                .withVelocityY(joystick.getRawAxis(0) * MaxSpeed * throttle(3)) // Drive left with
+                // negative X (left)
+                .withRotationalRate(joystick.getRawAxis(4) * MaxAngularRate * throttle(3))) // Drive
+        // counterclockwise
+        // with
+        // negative
+        // X (left)
+        );
         // joystick.().whileTrue(drivetrain.applyRequest(() -> brake));
         // joystick.b().whileTrue(drivetrain.applyRequest(() ->
         // point.withModuleDirection(new Rotation2d(-joystick.getLeftY(),
@@ -76,10 +94,20 @@ public class RobotContainer {
         // joystick.start().and(joystick.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
 
         // reset the field-centric heading on left bumper press
-        joystick.button(8).onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
+
+        joystick.button(3).and(joystick.button(2))
+                .onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
+
+        // Joystick button to apply the brake to stop all swerve drive modules
+        joystick.button(4).whileTrue(drivetrain.applyRequest(() -> brake));
+
         joystick.button(1).whileTrue(shooter.runMotorCommand(() -> joystick.getRawAxis(2)));
 
         drivetrain.registerTelemetry(logger::telemeterize);
+    }
+
+    private double throttle(int throttle_axis) {
+        return ((1 - (0.8 * Math.pow(this.joystick.getRawAxis(throttle_axis), 0.5))));
     }
 
     public Command getAutonomousCommand() {
