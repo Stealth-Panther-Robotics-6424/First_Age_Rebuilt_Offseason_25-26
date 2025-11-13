@@ -8,6 +8,7 @@ import java.util.concurrent.Flow.Publisher;
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
+import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.networktables.DoublePublisher;
@@ -61,6 +62,9 @@ public class Shooter_Subsystem extends SubsystemBase {
   private void NTUpdate() {
     TopSpeed.set(getTopSpeed());
     BottomSpeed.set(getBottomSpeed());
+
+    SignalLogger.writeDouble("TopSpeed", getTopSpeed());
+    SignalLogger.writeDouble("BottomSpeed", getBottomSpeed());
   }
 
   public Command runMotorCommand(DoubleSupplier powerAxis) {
