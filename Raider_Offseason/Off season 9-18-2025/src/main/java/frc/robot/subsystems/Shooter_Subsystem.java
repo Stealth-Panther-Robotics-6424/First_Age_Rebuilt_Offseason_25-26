@@ -21,8 +21,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-//pid code
-
+// pid code
 public class Shooter_Subsystem extends SubsystemBase {
   private DoubleSubscriber NTSpeedTop;
   private DoubleSubscriber NTSpeedBottom;
