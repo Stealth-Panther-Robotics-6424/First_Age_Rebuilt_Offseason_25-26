@@ -25,6 +25,8 @@ public class Intake_Subsystem extends SubsystemBase {
 
   private static class Constants {
     public static int HINTAKE_FX_CANID = 18;
+    public static int VINTAKE_LPIN = 0;
+    public static int VINTAKE_RPIN = 1;
   }
 
   private static TalonFX hIntakeFx = new TalonFX(Constants.HINTAKE_FX_CANID, "Upper Deck");
