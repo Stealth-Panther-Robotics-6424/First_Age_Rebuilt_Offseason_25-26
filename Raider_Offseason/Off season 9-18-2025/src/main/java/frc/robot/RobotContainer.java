@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
+import frc.robot.subsystems.Intake_Subsystem;
 import frc.robot.subsystems.Shooter_Subsystem;
 
 //johnathan's comment
@@ -48,6 +49,7 @@ public class RobotContainer {
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
     public final Shooter_Subsystem shooter = new Shooter_Subsystem();
+    public final Intake_Subsystem intake = new Intake_Subsystem();
 
     public RobotContainer() {
         configureBindings();
@@ -101,7 +103,9 @@ public class RobotContainer {
         // Joystick button to apply the brake to stop all swerve drive modules
         joystick.button(4).whileTrue(drivetrain.applyRequest(() -> brake));
 
-        joystick.button(1).whileTrue(shooter.runMotorCommand(() -> joystick.getRawAxis(2)));
+        joystick.axisGreaterThan(2, .4).whileTrue(Commands.parallel(shooter.slowReverse(), intake.intakeSpeed()));
+
+        joystick.button(2).whileTrue(shooter.highSpeed());
 
         drivetrain.registerTelemetry(logger::telemeterize);
     }

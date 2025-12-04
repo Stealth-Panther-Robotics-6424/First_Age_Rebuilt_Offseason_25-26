@@ -131,8 +131,11 @@ public class Shooter_Subsystem extends SubsystemBase {
   }
 
   public Command highSpeed() {
-    return setVelocityCommand(1000);
+    return setVelocityCommand(-10);
+  }
 
+  public Command slowReverse() {
+    return setVelocityCommand(25);
   }
 
   @Override
