@@ -15,6 +15,7 @@ import edu.wpi.first.networktables.DoublePublisher;
 import edu.wpi.first.networktables.DoubleSubscriber;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.motorcontrol.VictorSP;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -52,6 +53,10 @@ public class Intake_Subsystem extends SubsystemBase {
     hIntakeFx.getConfigurator().apply(slot0Configs);
   }
 
+  public static void setVertPower(VictorSP victor, double power) {
+    victor.set(power);
+  }
+
   private void setMotorSpeed(double speed) {
     hIntakeFx.setControl(hIntake_request.withVelocity(speed));
   }
@@ -87,7 +92,7 @@ public class Intake_Subsystem extends SubsystemBase {
   }
 
   public Command intakeSpeed() {
-    return setVelocityCommand(15);
+    return setVelocityCommand(100);
   }
 
   @Override

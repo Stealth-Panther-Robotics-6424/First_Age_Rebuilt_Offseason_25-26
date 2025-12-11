@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 
 import frc.robot.generated.TunerConstants;
+import frc.robot.subsystems.Climber_Subsystem;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.Intake_Subsystem;
 import frc.robot.subsystems.Shooter_Subsystem;
@@ -50,6 +51,7 @@ public class RobotContainer {
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
     public final Shooter_Subsystem shooter = new Shooter_Subsystem();
     public final Intake_Subsystem intake = new Intake_Subsystem();
+    public final Climber_Subsystem climber = new Climber_Subsystem();
 
     public RobotContainer() {
         configureBindings();
@@ -106,6 +108,9 @@ public class RobotContainer {
         joystick.axisGreaterThan(2, .4).whileTrue(Commands.parallel(shooter.slowReverse(), intake.intakeSpeed()));
 
         joystick.button(2).whileTrue(shooter.highSpeed());
+
+        joystick.button(5).whileTrue(climber.climberDown());
+        joystick.button(6).whileTrue(climber.climberUp());
 
         drivetrain.registerTelemetry(logger::telemeterize);
     }

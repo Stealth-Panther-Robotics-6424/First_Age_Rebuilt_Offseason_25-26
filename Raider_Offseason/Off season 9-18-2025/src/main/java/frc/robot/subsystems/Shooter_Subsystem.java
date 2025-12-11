@@ -71,7 +71,6 @@ public class Shooter_Subsystem extends SubsystemBase {
   private void setMotorSpeed(double speed) {
     topFx.setControl(top_request.withVelocity(speed));
     bottomFx.setControl(bottom_request.withVelocity(speed));
-
   }
 
   private double getTopSpeed() {
@@ -131,11 +130,11 @@ public class Shooter_Subsystem extends SubsystemBase {
   }
 
   public Command highSpeed() {
-    return setVelocityCommand(-10);
+    return setVelocityCommand(-50);
   }
 
   public Command slowReverse() {
-    return setVelocityCommand(25);
+    return setVelocityCommand(10);
   }
 
   @Override
