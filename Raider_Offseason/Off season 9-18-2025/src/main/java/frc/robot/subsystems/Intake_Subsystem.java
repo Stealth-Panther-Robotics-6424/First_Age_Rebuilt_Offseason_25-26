@@ -31,6 +31,8 @@ public class Intake_Subsystem extends SubsystemBase {
   }
 
   private static TalonFX hIntakeFx = new TalonFX(Constants.HINTAKE_FX_CANID, "Upper Deck");
+  private static VictorSP leftVert = new VictorSP(Constants.VINTAKE_LPIN);
+  private static VictorSP rightVert = new VictorSP(Constants.VINTAKE_RPIN);
 
   final VelocityVoltage hIntake_request = new VelocityVoltage(0).withSlot(0);
 
@@ -53,8 +55,9 @@ public class Intake_Subsystem extends SubsystemBase {
     hIntakeFx.getConfigurator().apply(slot0Configs);
   }
 
-  public static void setVertPower(VictorSP victor, double power) {
-    victor.set(power);
+  public void vertIntake(double speed) {
+    leftVert.set(speed);
+    rightVert.set(speed);
   }
 
   private void setMotorSpeed(double speed) {
